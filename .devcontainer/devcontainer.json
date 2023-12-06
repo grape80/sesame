@@ -1,5 +1,5 @@
 {
 	"dockerComposeFile": "../compose.yaml",
 	"service": "cicd",
-    "workspaceFolder": "/workspace"
+	"workspaceFolder": "/workspace"
 }
