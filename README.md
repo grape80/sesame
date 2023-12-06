@@ -1,2 +1,2 @@
-# sesame
-Sesame is a helper library for Vanilla JS.
+# Sesame.js
+Sesame.js is a helper library for Vanilla JS.
