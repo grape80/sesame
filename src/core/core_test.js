@@ -9,20 +9,20 @@ const orgDoc = globalThis.document;
 // The document to use for testing.
 const doc = new DOMParser().parseFromString(
     `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Test</title>
-  </head>
-  <body>
-    <div id="id-1" class="class-A"></div>
-    <div id="id-2" class="class-A"></div>
-    <div id="id-3" class="class-B"></div>
-  </body>
-  </html>
-  `,
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document Test</title>
+    </head>
+    <body>
+        <div id="id-1" class="class-A"></div>
+        <div id="id-2" class="class-A"></div>
+        <div id="id-3" class="class-B"></div>
+    </body>
+    </html>
+    `,
     'text/html',
 );
 
