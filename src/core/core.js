@@ -1,16 +1,16 @@
 // @ts-check
 
 /**
-* Creates an instance of sesame.
-*
-* @constructor
-* @param {string} parameter - The parameter used to select elements.
-* Switches the method to retrieve the element based on the initial letter of the parameter:
-*   - '#' : Uses document.getElementById()
-*   - '.' : Uses document.getElementsByClassName()
-*   - '*' : Uses document.querySelectorAll()
-* @returns {sesame} - The sesame instance.
-*/
+ * Creates an instance of sesame.
+ *
+ * @constructor
+ * @param {string} parameter - The parameter used to select elements.
+ * Switches the method to retrieve the element based on the initial letter of the parameter:
+ *   - '#' : Uses document.getElementById()
+ *   - '.' : Uses document.getElementsByClassName()
+ *   - '*' : Uses document.querySelectorAll()
+ * @returns {sesame} - The sesame instance.
+ */
 const sesame = function (parameter) {
     // Create an instance without the new keyword.
     if (!(this instanceof sesame)) {
@@ -28,7 +28,7 @@ const sesame = function (parameter) {
     }
 
     return this;
-}
+};
 
 /**
  * @type {Array<any>}

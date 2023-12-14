@@ -1,5 +1,26 @@
 {
-	"dockerComposeFile": "../compose.yaml",
-	"service": "cicd",
-	"workspaceFolder": "/workspace"
+    "dockerComposeFile": "../compose.yaml",
+    "service": "cicd",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "emeraldwalk.RunOnSave"
+            ],
+            "settings": {
+                "emeraldwalk.runonsave": {
+                    "commands": [
+                        {
+                            "match": "\\.js$",
+                            "cmd": "deno fmt ${file}"
+                        },
+                        {
+                            "match": "\\.json$",
+                            "cmd": "deno fmt ${file}"
+                        }
+                    ]
+                }
+            }
+        }
+    }
 }
