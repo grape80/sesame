@@ -31,6 +31,8 @@ const sesame = function (parameter) {
 };
 
 /**
+ * The elements obtained when creating an instance.
+ * 
  * @type {Array<any>}
  */
 sesame.prototype.elements = [];
