@@ -1,7 +1,8 @@
-import { DOMParser } from 'https://deno.land/x/deno_dom/deno-dom-wasm.ts';
-import { assertEquals, assertInstanceOf, assertStrictEquals } from 'https://deno.land/std/testing/asserts.ts';
+import { assertEquals, assertInstanceOf, assertStrictEquals } from 'std/testing/asserts';
 
-import { sesame as z } from './core.js';
+import { DOMParser } from 'dom';
+
+import { sesame as z } from '/core/core.js';
 
 // The document to use for testing.
 const doc = new DOMParser().parseFromString(

@@ -9,5 +9,6 @@
         "lineWidth": 120,
         "indentWidth": 4,
         "singleQuote": true
-    }
+    },
+    "importMap": "./import_map.json"
 }

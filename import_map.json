@@ -1,0 +1,8 @@
+{
+    "imports": {
+        "/": "./src/",
+        "./": "./",
+        "dom": "https://deno.land/x/deno_dom/deno-dom-wasm.ts",
+        "std/testing/asserts": "https://deno.land/std/testing/asserts.ts"
+    }
+}
