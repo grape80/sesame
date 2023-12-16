@@ -3,9 +3,6 @@ import { assertEquals, assertInstanceOf, assertStrictEquals } from 'https://deno
 
 import { sesame as z } from './core.js';
 
-// Save the original document.
-const orgDoc = globalThis.document;
-
 // The document to use for testing.
 const doc = new DOMParser().parseFromString(
     `
@@ -26,18 +23,26 @@ const doc = new DOMParser().parseFromString(
     'text/html',
 );
 
-Deno.test('Creating an instance without the new keyword', () => {
+Deno.test('Create an instance without the new keyword.', () => {
+    globalThis.document = doc.cloneNode(true);
+
     const instance = z('parameter');
     assertInstanceOf(instance, z);
+
+    globalThis.document = undefined;
 });
 
-Deno.test('Creating an instance with the new keyword', () => {
+Deno.test('Create an instance with the new keyword.', () => {
+    globalThis.document = doc.cloneNode(true);
+
     const instance = new z('parameter');
     assertInstanceOf(instance, z);
+
+    globalThis.document = undefined;
 });
 
-Deno.test('Selecting an element by id', () => {
-    globalThis.document = doc;
+Deno.test('Select an element by ID.', () => {
+    globalThis.document = doc.cloneNode(true);
 
     const got = z('#id-1');
     const want = document.getElementById('id-1');
@@ -45,11 +50,11 @@ Deno.test('Selecting an element by id', () => {
     assertEquals(got.elements.length, 1);
     assertStrictEquals(got.elements[0], want);
 
-    globalThis.document = orgDoc;
+    globalThis.document = undefined;
 });
 
-Deno.test('Selecting elements by class', () => {
-    globalThis.document = doc;
+Deno.test('Select elements by class.', () => {
+    globalThis.document = doc.cloneNode(true);
 
     const got = z('.class-A');
     const want = document.getElementsByClassName('class-A');
@@ -59,11 +64,11 @@ Deno.test('Selecting elements by class', () => {
         assertStrictEquals(got.elements[idx], el);
     });
 
-    globalThis.document = orgDoc;
+    globalThis.document = undefined;
 });
 
-Deno.test('Selecting elements by querySelectorAll', () => {
-    globalThis.document = doc;
+Deno.test('Select elements by CSS Selectors.', () => {
+    globalThis.document = doc.cloneNode(true);
 
     const got = z('*[id]');
     const want = document.querySelectorAll('*[id]');
@@ -73,5 +78,5 @@ Deno.test('Selecting elements by querySelectorAll', () => {
         assertStrictEquals(got.elements[idx], el);
     });
 
-    globalThis.document = orgDoc;
+    globalThis.document = undefined;
 });

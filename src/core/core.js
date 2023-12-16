@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * Creates an instance of sesame.
+ * Create an instance of sesame.
  *
  * @constructor
  * @param {string} parameter - The parameter used to select elements.
@@ -16,6 +16,11 @@ const sesame = function (parameter) {
     if (!(this instanceof sesame)) {
         return new sesame(parameter);
     }
+
+    // @ts-ignore
+    this.elements = [];
+    // @ts-ignore
+    this.functions = [];
 
     if (typeof parameter === 'string') {
         if (parameter.startsWith('#')) {
@@ -35,6 +40,24 @@ const sesame = function (parameter) {
  *
  * @type {Array<any>}
  */
-sesame.prototype.elements = [];
+sesame.prototype.elements = undefined;
+
+/**
+ * The functions that manipulate the DOM calling in the method chaining.
+ *
+ * @type {Array<Function>}
+ */
+sesame.prototype.functions = undefined;
+
+/**
+ * Update the DOM.
+ */
+sesame.prototype.update = function () {
+    this.elements.forEach((el) => {
+        this.functions.forEach((func) => {
+            func(el);
+        });
+    });
+};
 
 export { sesame };
