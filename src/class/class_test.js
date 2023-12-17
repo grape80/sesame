@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, it } from 'std/testing/bdd';
 import { DOMParser } from 'dom';
 
 import { sesame as z } from '../core/core.js';
-import '../css/css.js';
+import '../class/class.js';
 
 // The document to use for testing.
 const doc = new DOMParser().parseFromString(
@@ -27,7 +27,7 @@ const doc = new DOMParser().parseFromString(
     'text/html',
 );
 
-describe('CSS', () => {
+describe('Class manipulation', () => {
     beforeEach(() => {
         globalThis.document = doc.cloneNode(true);
     });
