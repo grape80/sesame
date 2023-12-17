@@ -1,8 +1,8 @@
 {
     "imports": {
-        "/": "./src/",
-        "./": "./",
-        "dom": "https://deno.land/x/deno_dom/deno-dom-wasm.ts",
-        "std/testing/asserts": "https://deno.land/std/testing/asserts.ts"
+        "std/testing/asserts": "https://deno.land/std/testing/asserts.ts",
+        "std/testing/bdd": "https://deno.land/std/testing/bdd.ts",
+
+        "dom": "https://deno.land/x/deno_dom/deno-dom-wasm.ts"
     }
 }

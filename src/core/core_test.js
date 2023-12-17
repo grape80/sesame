@@ -1,8 +1,9 @@
 import { assertEquals, assertInstanceOf, assertStrictEquals } from 'std/testing/asserts';
+import { afterEach, beforeEach, describe, it } from 'std/testing/bdd';
 
 import { DOMParser } from 'dom';
 
-import { sesame as z } from '/core/core.js';
+import { sesame as z } from '../core/core.js';
 
 // The document to use for testing.
 const doc = new DOMParser().parseFromString(
@@ -24,60 +25,54 @@ const doc = new DOMParser().parseFromString(
     'text/html',
 );
 
-Deno.test('Create an instance without the new keyword.', () => {
-    globalThis.document = doc.cloneNode(true);
-
-    const instance = z('parameter');
-    assertInstanceOf(instance, z);
-
-    globalThis.document = undefined;
-});
-
-Deno.test('Create an instance with the new keyword.', () => {
-    globalThis.document = doc.cloneNode(true);
-
-    const instance = new z('parameter');
-    assertInstanceOf(instance, z);
-
-    globalThis.document = undefined;
-});
-
-Deno.test('Select an element by ID.', () => {
-    globalThis.document = doc.cloneNode(true);
-
-    const got = z('#id-1');
-    const want = document.getElementById('id-1');
-
-    assertEquals(got.elements.length, 1);
-    assertStrictEquals(got.elements[0], want);
-
-    globalThis.document = undefined;
-});
-
-Deno.test('Select elements by class.', () => {
-    globalThis.document = doc.cloneNode(true);
-
-    const got = z('.class-A');
-    const want = document.getElementsByClassName('class-A');
-
-    assertEquals(got.elements.length, want.length);
-    want.forEach((el, idx) => {
-        assertStrictEquals(got.elements[idx], el);
+describe('Constructor', () => {
+    beforeEach(() => {
+        globalThis.document = doc.cloneNode(true);
     });
 
-    globalThis.document = undefined;
-});
+    describe('Create an instance', () => {
+        it('without the new keyword', () => {
+            const instance = z('parameter');
+            assertInstanceOf(instance, z);
+        });
 
-Deno.test('Select elements by CSS Selectors.', () => {
-    globalThis.document = doc.cloneNode(true);
-
-    const got = z('*[id]');
-    const want = document.querySelectorAll('*[id]');
-
-    assertEquals(got.elements.length, want.length);
-    want.forEach((el, idx) => {
-        assertStrictEquals(got.elements[idx], el);
+        it('with the new keyword', () => {
+            const instance = new z('parameter');
+            assertInstanceOf(instance, z);
+        });
     });
 
-    globalThis.document = undefined;
+    describe('Select elements', () => {
+        it('by id', () => {
+            const got = z('#id-1');
+            const want = document.getElementById('id-1');
+
+            assertEquals(got.elements.length, 1);
+            assertStrictEquals(got.elements[0], want);
+        });
+
+        it('by class', () => {
+            const got = z('.class-A');
+            const want = document.getElementsByClassName('class-A');
+
+            assertEquals(got.elements.length, want.length);
+            want.forEach((el, idx) => {
+                assertStrictEquals(got.elements[idx], el);
+            });
+        });
+
+        it('by css selector', () => {
+            const got = z('*[id]');
+            const want = document.querySelectorAll('[id]');
+
+            assertEquals(got.elements.length, want.length);
+            want.forEach((el, idx) => {
+                assertStrictEquals(got.elements[idx], el);
+            });
+        });
+    });
+
+    afterEach(() => {
+        globalThis.document = undefined;
+    });
 });

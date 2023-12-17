@@ -44,7 +44,9 @@ sesame.prototype.removeClass = function (...classNames) {
 sesame.prototype.toggleClass = function (...classNames) {
     //@ts-ignore
     this.functions.push((el) => {
-        el.classList.toggle(...classNames);
+        classNames.forEach((className) => {
+            el.classList.toggle(className);
+        });
     });
 
     return this;

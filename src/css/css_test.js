@@ -1,9 +1,10 @@
-import { assertEquals, assertInstanceOf, assertStrictEquals } from 'std/testing/asserts';
+import { assertEquals } from 'std/testing/asserts';
+import { afterEach, beforeEach, describe, it } from 'std/testing/bdd';
 
 import { DOMParser } from 'dom';
 
-import { sesame as z } from '/core/core.js';
-import '/css/css.js';
+import { sesame as z } from '../core/core.js';
+import '../css/css.js';
 
 // The document to use for testing.
 const doc = new DOMParser().parseFromString(
@@ -26,65 +27,136 @@ const doc = new DOMParser().parseFromString(
     'text/html',
 );
 
-Deno.test('Add a class.', () => {
-    globalThis.document = doc.cloneNode(true);
-
-    const cloneDoc = document.cloneNode(true);
-
-    // got
-    z('.class-A').addClass('class-X').update();
-    cloneDoc.querySelectorAll('.class-A').forEach((el) => {
-        el.classList.add('class-X');
+describe('CSS', () => {
+    beforeEach(() => {
+        globalThis.document = doc.cloneNode(true);
     });
-    assertEquals(document.documentElement.outerHTML, cloneDoc.documentElement.outerHTML);
 
-    globalThis.document = undefined;
-});
+    describe('Add class', () => {
+        it('a class', () => {
+            const cloneDoc = document.cloneNode(true);
 
-Deno.test('Add the classes.', () => {
-    globalThis.document = doc.cloneNode(true);
+            z('.class-A').addClass('class-X').update();
+            const got = document.documentElement.outerHTML;
 
-    const cloneDoc = document.cloneNode(true);
+            cloneDoc.querySelectorAll('.class-A').forEach((el) => {
+                el.classList.add('class-X');
+            });
+            const want = cloneDoc.documentElement.outerHTML;
 
-    // got
-    z('.class-A').addClass('class-Y', 'class-Z').update();
-    // want
-    cloneDoc.querySelectorAll('.class-A').forEach((el) => {
-        el.classList.add('class-Y', 'class-Z');
+            assertEquals(got, want);
+        });
+
+        it('classes', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            z('.class-A').addClass('class-Y', 'class-Z').update();
+            const got = document.documentElement.outerHTML;
+
+            cloneDoc.querySelectorAll('.class-A').forEach((el) => {
+                el.classList.add('class-Y', 'class-Z');
+            });
+            const want = cloneDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
     });
-    assertEquals(document.documentElement.outerHTML, cloneDoc.documentElement.outerHTML);
 
-    globalThis.document = undefined;
-});
+    describe('Remove class', () => {
+        it('a class', () => {
+            const cloneDoc = document.cloneNode(true);
 
-Deno.test('Remove a class.', () => {
-    globalThis.document = doc.cloneNode(true);
+            z('.class-B').removeClass('class-C').update();
+            const got = document.documentElement.outerHTML;
 
-    const cloneDoc = document.cloneNode(true);
+            cloneDoc.querySelectorAll('.class-B').forEach((el) => {
+                el.classList.remove('class-C');
+            });
+            const want = cloneDoc.documentElement.outerHTML;
 
-    // got
-    z('.class-B').removeClass('class-C').update();
-    // want
-    cloneDoc.querySelectorAll('.class-B').forEach((el) => {
-        el.classList.remove('class-C');
+            assertEquals(got, want);
+        });
+
+        it('classes', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            z('.class-B').removeClass('class-B', 'class-C').update();
+            const got = document.documentElement.outerHTML;
+
+            cloneDoc.querySelectorAll('.class-B').forEach((el) => {
+                el.classList.remove('class-B', 'class-C');
+            });
+            const want = cloneDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
     });
-    assertEquals(document.documentElement.outerHTML, cloneDoc.documentElement.outerHTML);
 
-    globalThis.document = undefined;
-});
+    describe('Toggle class', () => {
+        describe('Add', () => {
+            it('a class', () => {
+                const cloneDoc = document.cloneNode(true);
 
-Deno.test('Remove the classes.', () => {
-    globalThis.document = doc.cloneNode(true);
+                z('.class-A').toggleClass('class-X').update();
+                const got = document.documentElement.outerHTML;
 
-    const cloneDoc = document.cloneNode(true);
+                cloneDoc.querySelectorAll('.class-A').forEach((el) => {
+                    el.classList.toggle('class-X');
+                });
+                const want = cloneDoc.documentElement.outerHTML;
 
-    // got
-    z('.class-B').removeClass('class-B', 'class-C').update();
-    // want
-    cloneDoc.querySelectorAll('.class-B').forEach((el) => {
-        el.classList.remove('class-B', 'class-C');
+                assertEquals(got, want);
+            });
+
+            it('classes', () => {
+                const cloneDoc = document.cloneNode(true);
+
+                z('.class-A').toggleClass('class-Y', 'class-Z').update();
+                const got = document.documentElement.outerHTML;
+
+                cloneDoc.querySelectorAll('.class-A').forEach((el) => {
+                    el.classList.toggle('class-Y');
+                    el.classList.toggle('class-Z');
+                });
+                const want = cloneDoc.documentElement.outerHTML;
+
+                assertEquals(got, want);
+            });
+        });
+
+        describe('Remove', () => {
+            it('a class', () => {
+                const cloneDoc = document.cloneNode(true);
+
+                z('.class-B').toggleClass('class-C').update();
+                const got = document.documentElement.outerHTML;
+
+                cloneDoc.querySelectorAll('.class-B').forEach((el) => {
+                    el.classList.toggle('class-C');
+                });
+                const want = cloneDoc.documentElement.outerHTML;
+
+                assertEquals(got, want);
+            });
+
+            it('classes', () => {
+                const cloneDoc = document.cloneNode(true);
+
+                z('.class-B').toggleClass('class-B', 'class-C').update();
+                const got = document.documentElement.outerHTML;
+
+                cloneDoc.querySelectorAll('.class-B').forEach((el) => {
+                    el.classList.toggle('class-B');
+                    el.classList.toggle('class-C');
+                });
+                const want = cloneDoc.documentElement.outerHTML;
+
+                assertEquals(got, want);
+            });
+        });
     });
-    assertEquals(document.documentElement.outerHTML, cloneDoc.documentElement.outerHTML);
 
-    globalThis.document = undefined;
+    afterEach(() => {
+        globalThis.document = undefined;
+    });
 });
