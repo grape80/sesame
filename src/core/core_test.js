@@ -43,31 +43,55 @@ describe('Constructor', () => {
     });
 
     describe('Select elements', () => {
-        it('by id', () => {
-            const got = z('#id-1');
-            const want = document.getElementById('id-1');
+        describe('By id', () => {
+            it('exist', () => {
+                const got = z('#id-1');
+                const want = document.getElementById('id-1');
 
-            assertEquals(got.elements.length, 1);
-            assertStrictEquals(got.elements[0], want);
-        });
+                assertEquals(got.elements.length, 1);
+                assertStrictEquals(got.elements[0], want);
+            });
+            it('not exist', () => {
+                const got = z('#id-0');
 
-        it('by class', () => {
-            const got = z('.class-A');
-            const want = document.getElementsByClassName('class-A');
-
-            assertEquals(got.elements.length, want.length);
-            want.forEach((el, idx) => {
-                assertStrictEquals(got.elements[idx], el);
+                assertEquals(got.elements.length, 0);
+                assertStrictEquals(got.elements[0], undefined);
             });
         });
 
-        it('by css selector', () => {
-            const got = z('*[id]');
-            const want = document.querySelectorAll('[id]');
+        describe('By class', () => {
+            it('exist', () => {
+                const got = z('.class-A');
+                const want = document.getElementsByClassName('class-A');
 
-            assertEquals(got.elements.length, want.length);
-            want.forEach((el, idx) => {
-                assertStrictEquals(got.elements[idx], el);
+                assertEquals(got.elements.length, want.length);
+                want.forEach((el, idx) => {
+                    assertStrictEquals(got.elements[idx], el);
+                });
+            });
+            it('not exist', () => {
+                const got = z('.class-C');
+
+                assertEquals(got.elements.length, 0);
+                assertStrictEquals(got.elements[0], undefined);
+            });
+        });
+
+        describe('By css selector', () => {
+            it('exist', () => {
+                const got = z('*[id]');
+                const want = document.querySelectorAll('[id]');
+
+                assertEquals(got.elements.length, want.length);
+                want.forEach((el, idx) => {
+                    assertStrictEquals(got.elements[idx], el);
+                });
+            });
+            it('not exist', () => {
+                const got = z('*.class-C');
+
+                assertEquals(got.elements.length, 0);
+                assertStrictEquals(got.elements[0], undefined);
             });
         });
     });

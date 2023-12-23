@@ -24,7 +24,8 @@ const sesame = function (parameter) {
 
     if (typeof parameter === 'string') {
         if (parameter.startsWith('#')) {
-            this.elements = [document.getElementById(parameter.slice(1))];
+            const element = document.getElementById(parameter.slice(1));
+            if (element) this.elements = [element];
         } else if (parameter.startsWith('.')) {
             this.elements = Array.from(document.getElementsByClassName(parameter.slice(1)));
         } else if (parameter.startsWith('*')) {
