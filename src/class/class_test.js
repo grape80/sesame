@@ -33,7 +33,7 @@ describe('Class manipulation', () => {
     });
 
     describe('Add class', () => {
-        it('a class', () => {
+        it('single', () => {
             const cloneDoc = document.cloneNode(true);
 
             z('.class-A').addClass('class-X').update();
@@ -47,7 +47,7 @@ describe('Class manipulation', () => {
             assertEquals(got, want);
         });
 
-        it('classes', () => {
+        it('multiple', () => {
             const cloneDoc = document.cloneNode(true);
 
             z('.class-A').addClass('class-Y', 'class-Z').update();
@@ -63,7 +63,7 @@ describe('Class manipulation', () => {
     });
 
     describe('Remove class', () => {
-        it('a class', () => {
+        it('single', () => {
             const cloneDoc = document.cloneNode(true);
 
             z('.class-B').removeClass('class-C').update();
@@ -77,7 +77,7 @@ describe('Class manipulation', () => {
             assertEquals(got, want);
         });
 
-        it('classes', () => {
+        it('multiple', () => {
             const cloneDoc = document.cloneNode(true);
 
             z('.class-B').removeClass('class-B', 'class-C').update();
@@ -94,7 +94,7 @@ describe('Class manipulation', () => {
 
     describe('Toggle class', () => {
         describe('Add', () => {
-            it('a class', () => {
+            it('single', () => {
                 const cloneDoc = document.cloneNode(true);
 
                 z('.class-A').toggleClass('class-X').update();
@@ -108,7 +108,7 @@ describe('Class manipulation', () => {
                 assertEquals(got, want);
             });
 
-            it('classes', () => {
+            it('multiple', () => {
                 const cloneDoc = document.cloneNode(true);
 
                 z('.class-A').toggleClass('class-Y', 'class-Z').update();
@@ -125,7 +125,7 @@ describe('Class manipulation', () => {
         });
 
         describe('Remove', () => {
-            it('a class', () => {
+            it('single', () => {
                 const cloneDoc = document.cloneNode(true);
 
                 z('.class-B').toggleClass('class-C').update();
@@ -139,7 +139,7 @@ describe('Class manipulation', () => {
                 assertEquals(got, want);
             });
 
-            it('classes', () => {
+            it('multiple', () => {
                 const cloneDoc = document.cloneNode(true);
 
                 z('.class-B').toggleClass('class-B', 'class-C').update();
