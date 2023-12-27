@@ -9,12 +9,13 @@
  *   - '#' : Uses document.getElementById()
  *   - '.' : Uses document.getElementsByClassName()
  *   - '*' : Uses document.querySelectorAll()
+ * @param {Document} [context=document] - The context used to select elements.
  * @returns {sesame} - The sesame instance.
  */
-const sesame = function (parameter) {
+const sesame = function (parameter, context) {
     // Create an instance without the new keyword.
     if (!(this instanceof sesame)) {
-        return new sesame(parameter);
+        return new sesame(parameter, context);
     }
 
     // @ts-ignore
@@ -23,13 +24,14 @@ const sesame = function (parameter) {
     this.functions = [];
 
     if (typeof parameter === 'string') {
+        const doc = context || document;
         if (parameter.startsWith('#')) {
-            const element = document.getElementById(parameter.slice(1));
+            const element = doc.getElementById(parameter.slice(1));
             if (element) this.elements = [element];
         } else if (parameter.startsWith('.')) {
-            this.elements = Array.from(document.getElementsByClassName(parameter.slice(1)));
+            this.elements = Array.from(doc.getElementsByClassName(parameter.slice(1)));
         } else if (parameter.startsWith('*')) {
-            this.elements = Array.from(document.querySelectorAll(parameter.slice(1)));
+            this.elements = Array.from(doc.querySelectorAll(parameter.slice(1)));
         }
     }
 
