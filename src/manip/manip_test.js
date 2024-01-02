@@ -35,8 +35,8 @@ describe('Text manipulation', () => {
         it('single', () => {
             const cloneDoc = document.cloneNode(true);
 
-            const got = z('#id-1').text().join();
-            const want = cloneDoc.getElementById('id-1').textContent;
+            const got = z('#id-1').text();
+            const want = [cloneDoc.getElementById('id-1').textContent];
 
             assertEquals(got, want);
         });
@@ -44,8 +44,8 @@ describe('Text manipulation', () => {
         it('multiple', () => {
             const cloneDoc = document.cloneNode(true);
 
-            const got = z('*[id]').text().join();
-            const want = Array.from(cloneDoc.querySelectorAll('[id]')).map((el) => el.textContent).join();
+            const got = z('*[id]').text();
+            const want = Array.from(cloneDoc.querySelectorAll('[id]')).map((el) => el.textContent);
 
             assertEquals(got, want);
         });
