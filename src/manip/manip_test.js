@@ -83,3 +83,77 @@ describe('Text manipulation', () => {
         globalThis.document = undefined;
     });
 });
+
+describe('Attribute manipulation', () => {
+    beforeEach(() => {
+        globalThis.document = doc.cloneNode(true);
+    });
+
+    describe('Get attributes from element', () => {
+        it('single', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            const got = z('#id-1').attrs();
+
+            const el = cloneDoc.getElementById('id-1');
+            const want = new Array(
+                el.getAttributeNames().reduce((acc, key) => {
+                    acc.set(key, el.getAttribute(key));
+                    return acc;
+                }, new Map()),
+            );
+
+            assertEquals(got, want);
+        });
+
+        it('multiple', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            const got = z('*[id]').attrs();
+
+            const els = cloneDoc.querySelectorAll('[id]');
+            const want = Array.from(els).map((el) => {
+                return el.getAttributeNames().reduce((acc, key) => {
+                    acc.set(key, el.getAttribute(key));
+                    return acc;
+                }, new Map());
+            });
+
+            assertEquals(got, want);
+        });
+    });
+
+    describe('Set attributes to element', () => {
+        it('single', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            const attrMap = new Map([['data-no', 'data-no-1']]);
+            z('#id-1').attrs(attrMap).update();
+            const got = document.documentElement.outerHTML;
+
+            cloneDoc.getElementById('id-1').setAttribute('data-no', 'data-no-1');
+            const want = cloneDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
+
+        it('multiple', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            const attrMap = new Map([['data-no', 'data-no-M']]);
+            z('*[id]').attrs(attrMap).update();
+            const got = document.documentElement.outerHTML;
+
+            cloneDoc.querySelectorAll('[id]').forEach((el) => {
+                el.setAttribute('data-no', 'data-no-M');
+            });
+            const want = cloneDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
+    });
+
+    afterEach(() => {
+        globalThis.document = undefined;
+    });
+});
