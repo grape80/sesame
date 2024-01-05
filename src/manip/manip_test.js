@@ -20,6 +20,14 @@ const doc = new DOMParser().parseFromString(
     <div id="id-1" data-id="data-id-1">text-A</div>
     <div id="id-2" data-id="data-id-2">text-B</div>
     <div id="id-3" data-id="data-id-3">text-C</div>
+    <div id="id-4" data-id="data-id-4">
+        <p>para-A</p>
+    </div>
+    <div id="id-5" data-id="data-id-5">
+        <p>para-B</p>
+        <p>para-C</p>
+        <p>para-D</p>
+    </div>
 </body>
 </html>
 `,
@@ -148,6 +156,40 @@ describe('Attribute manipulation', () => {
                 el.setAttribute('data-no', 'data-no-M');
             });
             const want = cloneDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
+    });
+
+    afterEach(() => {
+        globalThis.document = undefined;
+    });
+});
+
+describe('Elements manipulation', () => {
+    beforeEach(() => {
+        globalThis.document = doc.cloneNode(true);
+    });
+
+    describe('Get children', () => {
+        it('single', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            const got = z('#id-4').children().text();
+            const want = Array.from(cloneDoc.getElementById('id-4').children).map((el) => el.textContent);
+
+            assertEquals(got, want);
+        });
+
+        it('multiple', () => {
+            const cloneDoc = document.cloneNode(true);
+
+            const got = z('*[id]').children().text();
+
+            const els = cloneDoc.querySelectorAll('[id]');
+            const want = Array.from(els).reduce((acc, el) => {
+                return acc.concat(Array.from(el.children).map((el) => el.textContent));
+            }, new Array());
 
             assertEquals(got, want);
         });

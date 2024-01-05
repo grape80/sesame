@@ -53,3 +53,15 @@ sesame.prototype.attrs = function (attrMap) {
 
     return this;
 };
+
+/**
+ * Get the children of the {@link elements}.
+ * @returns {sesame} - The sesame instance.
+ */
+sesame.prototype.children = function () {
+    this.elements = this.elements.reduce((acc, el) => {
+        return acc.concat(el.children);
+    }, new Array());
+
+    return this;
+};
