@@ -104,12 +104,13 @@ describe('Attribute manipulation', () => {
             const got = z('#id-1').attrs();
 
             const el = cloneDoc.getElementById('id-1');
-            const want = new Array(
-                el.getAttributeNames().reduce((acc, key) => {
-                    acc.set(key, el.getAttribute(key));
-                    return acc;
-                }, new Map()),
-            );
+            const want = [
+                new Map(
+                    el.getAttributeNames().map((name) => {
+                        return [name, el.getAttribute(name)];
+                    }),
+                ),
+            ];
 
             assertEquals(got, want);
         });
@@ -121,10 +122,11 @@ describe('Attribute manipulation', () => {
 
             const els = cloneDoc.querySelectorAll('[id]');
             const want = Array.from(els).map((el) => {
-                return el.getAttributeNames().reduce((acc, key) => {
-                    acc.set(key, el.getAttribute(key));
-                    return acc;
-                }, new Map());
+                return new Map(
+                    el.getAttributeNames().map((name) => {
+                        return [name, el.getAttribute(name)];
+                    }),
+                );
             });
 
             assertEquals(got, want);
@@ -135,7 +137,9 @@ describe('Attribute manipulation', () => {
         it('single', () => {
             const cloneDoc = document.cloneNode(true);
 
-            const attrMap = new Map([['data-no', 'data-no-1']]);
+            const attrMap = new Map();
+            attrMap.set('data-no', 'data-no-1');
+
             z('#id-1').attrs(attrMap).update();
             const got = document.documentElement.outerHTML;
 
@@ -148,7 +152,9 @@ describe('Attribute manipulation', () => {
         it('multiple', () => {
             const cloneDoc = document.cloneNode(true);
 
-            const attrMap = new Map([['data-no', 'data-no-M']]);
+            const attrMap = new Map();
+            attrMap.set('data-no', 'data-no-M');
+
             z('*[id]').attrs(attrMap).update();
             const got = document.documentElement.outerHTML;
 

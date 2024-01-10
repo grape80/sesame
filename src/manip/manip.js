@@ -36,11 +36,12 @@ sesame.prototype.text = function (text) {
 sesame.prototype.attrs = function (attrMap) {
     if (attrMap === undefined) {
         return this.elements.map((el) => {
-            // @ts-ignore
-            return el.getAttributeNames().reduce((acc, key) => {
-                acc.set(key, el.getAttribute(key));
-                return acc;
-            }, new Map());
+            return new Map(
+                // @ts-ignore
+                el.getAttributeNames().map((name) => {
+                    return [name, el.getAttribute(name)];
+                }),
+            );
         });
     }
 
