@@ -38,8 +38,8 @@ sesame.prototype.attrs = function (attrMap) {
         return this.elements.map((el) => {
             return new Map(
                 // @ts-ignore
-                el.getAttributeNames().map((name) => {
-                    return [name, el.getAttribute(name)];
+                el.getAttributeNames().map((n) => {
+                    return [n, el.getAttribute(n)];
                 }),
             );
         });
@@ -47,8 +47,8 @@ sesame.prototype.attrs = function (attrMap) {
 
     // @ts-ignore
     this.functions.push((el) => {
-        attrMap.forEach((value, key) => {
-            el.setAttribute(key, value);
+        attrMap.forEach((v, k) => {
+            el.setAttribute(k, v);
         });
     });
 

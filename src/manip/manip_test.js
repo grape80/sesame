@@ -1,4 +1,4 @@
-import { assertEquals } from 'std/testing/asserts';
+import { assertEquals, assertStrictEquals } from 'std/testing/asserts';
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd';
 
 import { DOMParser } from 'dom';
@@ -34,26 +34,31 @@ const doc = new DOMParser().parseFromString(
     'text/html',
 );
 
+// The document for comparison.
+let compDoc = undefined;
+
 describe('Text manipulation', () => {
     beforeEach(() => {
         globalThis.document = doc.cloneNode(true);
+        compDoc = document.cloneNode(true);
+    });
+
+    afterEach(() => {
+        globalThis.document = undefined;
+        compDoc = undefined;
     });
 
     describe('Get text from element', () => {
         it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
             const got = z('#id-1').text();
-            const want = [cloneDoc.getElementById('id-1').textContent];
+            const want = [document.getElementById('id-1').textContent];
 
             assertEquals(got, want);
         });
 
         it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
             const got = z('*[id]').text();
-            const want = Array.from(cloneDoc.querySelectorAll('[id]')).map((el) => el.textContent);
+            const want = Array.from(document.querySelectorAll('[id]')).map((el) => el.textContent);
 
             assertEquals(got, want);
         });
@@ -61,53 +66,47 @@ describe('Text manipulation', () => {
 
     describe('Set text to element', () => {
         it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
             z('#id-1').text('text-1').update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.getElementById('id-1').textContent = 'text-1';
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.getElementById('id-1').textContent = 'text-1';
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
 
         it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
             z('*[id]').text('text-M').update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.querySelectorAll('[id]').forEach((el) => {
-                el.textContent = 'text-M';
-            });
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.querySelectorAll('[id]').forEach((el) => el.textContent = 'text-M');
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
-    });
-
-    afterEach(() => {
-        globalThis.document = undefined;
     });
 });
 
 describe('Attribute manipulation', () => {
     beforeEach(() => {
         globalThis.document = doc.cloneNode(true);
+        compDoc = document.cloneNode(true);
+    });
+
+    afterEach(() => {
+        globalThis.document = undefined;
+        compDoc = undefined;
     });
 
     describe('Get attributes from element', () => {
         it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
             const got = z('#id-1').attrs();
 
-            const el = cloneDoc.getElementById('id-1');
+            const elem = document.getElementById('id-1');
             const want = [
                 new Map(
-                    el.getAttributeNames().map((name) => {
-                        return [name, el.getAttribute(name)];
+                    elem.getAttributeNames().map((n) => {
+                        return [n, elem.getAttribute(n)];
                     }),
                 ),
             ];
@@ -116,15 +115,13 @@ describe('Attribute manipulation', () => {
         });
 
         it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
             const got = z('*[id]').attrs();
 
-            const els = cloneDoc.querySelectorAll('[id]');
+            const els = document.querySelectorAll('[id]');
             const want = Array.from(els).map((el) => {
                 return new Map(
-                    el.getAttributeNames().map((name) => {
-                        return [name, el.getAttribute(name)];
+                    el.getAttributeNames().map((n) => {
+                        return [n, el.getAttribute(n)];
                     }),
                 );
             });
@@ -135,73 +132,65 @@ describe('Attribute manipulation', () => {
 
     describe('Set attributes to element', () => {
         it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
             const attrMap = new Map();
             attrMap.set('data-no', 'data-no-1');
 
             z('#id-1').attrs(attrMap).update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.getElementById('id-1').setAttribute('data-no', 'data-no-1');
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.getElementById('id-1').setAttribute('data-no', 'data-no-1');
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
 
         it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
             const attrMap = new Map();
             attrMap.set('data-no', 'data-no-M');
 
             z('*[id]').attrs(attrMap).update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.querySelectorAll('[id]').forEach((el) => {
-                el.setAttribute('data-no', 'data-no-M');
-            });
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.querySelectorAll('[id]').forEach((el) => el.setAttribute('data-no', 'data-no-M'));
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
-    });
-
-    afterEach(() => {
-        globalThis.document = undefined;
     });
 });
 
 describe('Elements manipulation', () => {
     beforeEach(() => {
         globalThis.document = doc.cloneNode(true);
-    });
-
-    describe('Get children', () => {
-        it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
-            const got = z('#id-4').children().text();
-            const want = Array.from(cloneDoc.getElementById('id-4').children).map((el) => el.textContent);
-
-            assertEquals(got, want);
-        });
-
-        it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
-            const got = z('*[id]').children().text();
-
-            const els = cloneDoc.querySelectorAll('[id]');
-            const want = Array.from(els).reduce((acc, el) => {
-                return acc.concat(Array.from(el.children).map((el) => el.textContent));
-            }, new Array());
-
-            assertEquals(got, want);
-        });
+        compDoc = document.cloneNode(true);
     });
 
     afterEach(() => {
         globalThis.document = undefined;
+        compDoc = undefined;
+    });
+
+    describe('Get children', () => {
+        it('single', () => {
+            const got = z('#id-4').children();
+            const want = Array.from(document.getElementById('id-4').children);
+
+            assertEquals(got.elements.length, want.length);
+            want.forEach((el, idx) => {
+                assertStrictEquals(got.elements[idx], el);
+            });
+        });
+
+        it('multiple', () => {
+            const got = z('*[id]').children();
+
+            const els = document.querySelectorAll('[id]');
+            const want = Array.from(els).flatMap((el) => el.children);
+
+            assertEquals(got.elements.length, want.length);
+            want.forEach((el, idx) => {
+                assertStrictEquals(got.elements[idx], el);
+            });
+        });
     });
 });
