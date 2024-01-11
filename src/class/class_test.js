@@ -36,6 +36,11 @@ describe('Class manipulation', () => {
         compDoc = document.cloneNode(true);
     });
 
+    afterEach(() => {
+        globalThis.document = undefined;
+        compDoc = undefined;
+    });
+
     describe('Add class', () => {
         it('single', () => {
             z('.class-1').addClass('class-X').update();
@@ -130,10 +135,5 @@ describe('Class manipulation', () => {
                 assertEquals(got, want);
             });
         });
-    });
-
-    afterEach(() => {
-        globalThis.document = undefined;
-        compDoc = undefined;
     });
 });
