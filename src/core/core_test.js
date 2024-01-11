@@ -30,6 +30,10 @@ describe('Constructor', () => {
         globalThis.document = doc.cloneNode(true);
     });
 
+    afterEach(() => {
+        globalThis.document = undefined;
+    });
+
     describe('Create an instance', () => {
         it('without the new keyword', () => {
             const got = z('parameter');
@@ -104,9 +108,5 @@ describe('Constructor', () => {
                 assertStrictEquals(got.elements[0], want);
             });
         });
-    });
-
-    afterEach(() => {
-        globalThis.document = undefined;
     });
 });
