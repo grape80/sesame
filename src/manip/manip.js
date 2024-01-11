@@ -57,12 +57,25 @@ sesame.prototype.attrs = function (attrMap) {
 
 /**
  * Get the children of the {@link elements}.
+ * Filters the children by the {@param cssSelector} if it is provided.
+ *
+ * @param {string} [cssSelector] - The CSS selector to filter the children.
  * @returns {sesame} - The sesame instance.
  */
-sesame.prototype.children = function () {
-    this.elements = this.elements.reduce((acc, el) => {
-        return acc.concat(el.children);
-    }, new Array());
+sesame.prototype.children = function (cssSelector) {
+    if (cssSelector === undefined) {
+        this.elements = this.elements.flatMap((el) => el.children);
+
+        return this;
+    }
+
+    if (typeof cssSelector === 'string') {
+        this.elements = this.elements.flatMap((el) => {
+            return Array.from(el.children).filter((c) => c.matches(cssSelector));
+        });
+
+        return this;
+    }
 
     return this;
 };
