@@ -17,46 +17,42 @@ const doc = new DOMParser().parseFromString(
     <title>Document Test</title>
 </head>
 <body>
-    <div id="id-1" class="class-A"></div>
-    <div id="id-2" class="class-A"></div>
-    <div id="id-3" class="class-B class-C"></div>
-    <div id="id-4" class="class-B class-C"></div>
+    <div id="id-1" class="class-1"></div>
+    <div id="id-2" class="class-1"></div>
+    <div id="id-3" class="class-2 class-3"></div>
+    <div id="id-4" class="class-2 class-3"></div>
 </body>
 </html>
 `,
     'text/html',
 );
 
+// The document for comparison.
+let compDoc = undefined;
+
 describe('Class manipulation', () => {
     beforeEach(() => {
         globalThis.document = doc.cloneNode(true);
+        compDoc = document.cloneNode(true);
     });
 
     describe('Add class', () => {
         it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
-            z('.class-A').addClass('class-X').update();
+            z('.class-1').addClass('class-X').update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.querySelectorAll('.class-A').forEach((el) => {
-                el.classList.add('class-X');
-            });
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.querySelectorAll('.class-1').forEach((el) => el.classList.add('class-X'));
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
 
         it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
-            z('.class-A').addClass('class-Y', 'class-Z').update();
+            z('.class-1').addClass('class-Y', 'class-Z').update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.querySelectorAll('.class-A').forEach((el) => {
-                el.classList.add('class-Y', 'class-Z');
-            });
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.querySelectorAll('.class-1').forEach((el) => el.classList.add('class-Y', 'class-Z'));
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
@@ -64,29 +60,21 @@ describe('Class manipulation', () => {
 
     describe('Remove class', () => {
         it('single', () => {
-            const cloneDoc = document.cloneNode(true);
-
-            z('.class-B').removeClass('class-C').update();
+            z('.class-2').removeClass('class-3').update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.querySelectorAll('.class-B').forEach((el) => {
-                el.classList.remove('class-C');
-            });
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.querySelectorAll('.class-2').forEach((el) => el.classList.remove('class-3'));
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
 
         it('multiple', () => {
-            const cloneDoc = document.cloneNode(true);
-
-            z('.class-B').removeClass('class-B', 'class-C').update();
+            z('.class-2').removeClass('class-2', 'class-3').update();
             const got = document.documentElement.outerHTML;
 
-            cloneDoc.querySelectorAll('.class-B').forEach((el) => {
-                el.classList.remove('class-B', 'class-C');
-            });
-            const want = cloneDoc.documentElement.outerHTML;
+            compDoc.querySelectorAll('.class-2').forEach((el) => el.classList.remove('class-2', 'class-3'));
+            const want = compDoc.documentElement.outerHTML;
 
             assertEquals(got, want);
         });
@@ -95,30 +83,24 @@ describe('Class manipulation', () => {
     describe('Toggle class', () => {
         describe('Add', () => {
             it('single', () => {
-                const cloneDoc = document.cloneNode(true);
-
-                z('.class-A').toggleClass('class-X').update();
+                z('.class-1').toggleClass('class-X').update();
                 const got = document.documentElement.outerHTML;
 
-                cloneDoc.querySelectorAll('.class-A').forEach((el) => {
-                    el.classList.toggle('class-X');
-                });
-                const want = cloneDoc.documentElement.outerHTML;
+                compDoc.querySelectorAll('.class-1').forEach((el) => el.classList.toggle('class-X'));
+                const want = compDoc.documentElement.outerHTML;
 
                 assertEquals(got, want);
             });
 
             it('multiple', () => {
-                const cloneDoc = document.cloneNode(true);
-
-                z('.class-A').toggleClass('class-Y', 'class-Z').update();
+                z('.class-1').toggleClass('class-Y', 'class-Z').update();
                 const got = document.documentElement.outerHTML;
 
-                cloneDoc.querySelectorAll('.class-A').forEach((el) => {
+                compDoc.querySelectorAll('.class-1').forEach((el) => {
                     el.classList.toggle('class-Y');
                     el.classList.toggle('class-Z');
                 });
-                const want = cloneDoc.documentElement.outerHTML;
+                const want = compDoc.documentElement.outerHTML;
 
                 assertEquals(got, want);
             });
@@ -126,30 +108,24 @@ describe('Class manipulation', () => {
 
         describe('Remove', () => {
             it('single', () => {
-                const cloneDoc = document.cloneNode(true);
-
-                z('.class-B').toggleClass('class-C').update();
+                z('.class-2').toggleClass('class-3').update();
                 const got = document.documentElement.outerHTML;
 
-                cloneDoc.querySelectorAll('.class-B').forEach((el) => {
-                    el.classList.toggle('class-C');
-                });
-                const want = cloneDoc.documentElement.outerHTML;
+                compDoc.querySelectorAll('.class-2').forEach((el) => el.classList.toggle('class-3'));
+                const want = compDoc.documentElement.outerHTML;
 
                 assertEquals(got, want);
             });
 
             it('multiple', () => {
-                const cloneDoc = document.cloneNode(true);
-
-                z('.class-B').toggleClass('class-B', 'class-C').update();
+                z('.class-2').toggleClass('class-2', 'class-3').update();
                 const got = document.documentElement.outerHTML;
 
-                cloneDoc.querySelectorAll('.class-B').forEach((el) => {
-                    el.classList.toggle('class-B');
-                    el.classList.toggle('class-C');
+                compDoc.querySelectorAll('.class-2').forEach((el) => {
+                    el.classList.toggle('class-2');
+                    el.classList.toggle('class-3');
                 });
-                const want = cloneDoc.documentElement.outerHTML;
+                const want = compDoc.documentElement.outerHTML;
 
                 assertEquals(got, want);
             });
@@ -158,5 +134,6 @@ describe('Class manipulation', () => {
 
     afterEach(() => {
         globalThis.document = undefined;
+        compDoc = undefined;
     });
 });

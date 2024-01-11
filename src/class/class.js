@@ -10,10 +10,8 @@ import { sesame } from '../core/core.js';
  * @returns {sesame} - The sesame instance.
  */
 sesame.prototype.addClass = function (...classNames) {
-    //@ts-ignore
-    this.functions.push((el) => {
-        el.classList.add(...classNames);
-    });
+    // @ts-ignore
+    this.functions.push((el) => el.classList.add(...classNames));
 
     return this;
 };
@@ -26,10 +24,8 @@ sesame.prototype.addClass = function (...classNames) {
  * @returns {sesame} - The sesame instance.
  */
 sesame.prototype.removeClass = function (...classNames) {
-    //@ts-ignore
-    this.functions.push((el) => {
-        el.classList.remove(...classNames);
-    });
+    // @ts-ignore
+    this.functions.push((el) => el.classList.remove(...classNames));
 
     return this;
 };
@@ -42,7 +38,7 @@ sesame.prototype.removeClass = function (...classNames) {
  * @returns {sesame} - The sesame instance.
  */
 sesame.prototype.toggleClass = function (...classNames) {
-    //@ts-ignore
+    // @ts-ignore
     this.functions.push((el) => {
         classNames.forEach((className) => {
             el.classList.toggle(className);
