@@ -16,9 +16,9 @@ const doc = new DOMParser().parseFromString(
     <title>Document Test</title>
 </head>
 <body>
-    <div id="id-1" class="class-A"></div>
-    <div id="id-2" class="class-A"></div>
-    <div id="id-3" class="class-B"></div>
+    <div id="id-1" class="class-1"></div>
+    <div id="id-2" class="class-1"></div>
+    <div id="id-3" class="class-2"></div>
 </body>
 </html>
 `,
@@ -32,13 +32,17 @@ describe('Constructor', () => {
 
     describe('Create an instance', () => {
         it('without the new keyword', () => {
-            const instance = z('parameter');
-            assertInstanceOf(instance, z);
+            const got = z('parameter');
+            const want = z;
+
+            assertInstanceOf(got, want);
         });
 
         it('with the new keyword', () => {
-            const instance = new z('parameter');
-            assertInstanceOf(instance, z);
+            const got = new z('parameter');
+            const want = z;
+
+            assertInstanceOf(got, want);
         });
     });
 
@@ -51,29 +55,33 @@ describe('Constructor', () => {
                 assertEquals(got.elements.length, 1);
                 assertStrictEquals(got.elements[0], want);
             });
+
             it('not exist', () => {
-                const got = z('#id-0');
+                const got = z('#not-exist');
+                const want = undefined;
 
                 assertEquals(got.elements.length, 0);
-                assertStrictEquals(got.elements[0], undefined);
+                assertStrictEquals(got.elements[0], want);
             });
         });
 
         describe('By class', () => {
             it('exist', () => {
-                const got = z('.class-A');
-                const want = document.getElementsByClassName('class-A');
+                const got = z('.class-1');
+                const want = document.getElementsByClassName('class-1');
 
                 assertEquals(got.elements.length, want.length);
                 want.forEach((el, idx) => {
                     assertStrictEquals(got.elements[idx], el);
                 });
             });
+
             it('not exist', () => {
-                const got = z('.class-C');
+                const got = z('.not-exist');
+                const want = undefined;
 
                 assertEquals(got.elements.length, 0);
-                assertStrictEquals(got.elements[0], undefined);
+                assertStrictEquals(got.elements[0], want);
             });
         });
 
@@ -87,11 +95,13 @@ describe('Constructor', () => {
                     assertStrictEquals(got.elements[idx], el);
                 });
             });
+
             it('not exist', () => {
-                const got = z('*.class-C');
+                const got = z('*.not-exist');
+                const want = undefined;
 
                 assertEquals(got.elements.length, 0);
-                assertStrictEquals(got.elements[0], undefined);
+                assertStrictEquals(got.elements[0], want);
             });
         });
     });
