@@ -56,6 +56,32 @@ sesame.prototype.attrs = function (attrMap) {
 };
 
 /**
+ * Get the data of the {@link elements} if the {@param dataMap} is not provided.
+ *
+ * Set the data to the {@link elements} if the {@param dataMap} is provided.
+ * It is executed by calling the {@link update}.
+ *
+ * @param {Map<string, string>} dataMap - The data to set.
+ * @returns {Array<Map<string, string>>|sesame} - The data of the {@link elements} or the sesame instance.
+ */
+sesame.prototype.data = function (dataMap) {
+    if (dataMap === undefined) {
+        return this.elements.map((el) => {
+            return new Map(Object.entries(el.dataset));
+        });
+    }
+
+    // @ts-ignore
+    this.functions.push((el) => {
+        dataMap.forEach((v, k) => {
+            el.dataset[k] = v;
+        });
+    });
+
+    return this;
+};
+
+/**
  * Get the children of the {@link elements}.
  * Filters the children by the {@param cssSelector} if it is provided.
  *

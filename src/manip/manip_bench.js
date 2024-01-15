@@ -68,3 +68,29 @@ Deno.bench('Sesame : Attributes manipulation - Get', { group: 'attributes-get' }
 
     globalThis.document = undefined;
 });
+
+Deno.bench('Vanilla: Data manipulation - Get', { group: 'data-get', baseline: true }, (b) => {
+    globalThis.document = doc.cloneNode(true);
+
+    b.start();
+
+    Array.from(document.querySelectorAll('[id]')).map((el) => {
+        return new Map(Object.entries(el.dataset));
+    });
+
+    b.end();
+
+    globalThis.document = undefined;
+});
+
+Deno.bench('Sesame : Data manipulation - Get', { group: 'data-get' }, (b) => {
+    globalThis.document = doc.cloneNode(true);
+
+    b.start();
+
+    z('*[id]').data();
+
+    b.end();
+
+    globalThis.document = undefined;
+});

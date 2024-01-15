@@ -159,6 +159,70 @@ describe('Attribute manipulation', () => {
     });
 });
 
+describe('Data manipulation', () => {
+    beforeEach(() => {
+        globalThis.document = doc.cloneNode(true);
+        compDoc = document.cloneNode(true);
+    });
+
+    afterEach(() => {
+        globalThis.document = undefined;
+        compDoc = undefined;
+    });
+
+    describe('Get data from element', () => {
+        it('single', () => {
+            const got = z('#id-1').data();
+
+            const elem = document.getElementById('id-1');
+            const want = [
+                new Map(Object.entries(elem.dataset)),
+            ];
+
+            assertEquals(got, want);
+        });
+
+        it('multiple', () => {
+            const got = z('*[id]').data();
+
+            const els = document.querySelectorAll('[id]');
+            const want = Array.from(els).map((el) => {
+                return new Map(Object.entries(el.dataset));
+            });
+
+            assertEquals(got, want);
+        });
+    });
+
+    describe('Set data to element', () => {
+        it('single', () => {
+            const dataMap = new Map();
+            dataMap.set('no', 'data-no-1');
+
+            z('#id-1').data(dataMap).update();
+            const got = document.documentElement.outerHTML;
+
+            compDoc.getElementById('id-1').dataset['no'] = 'data-no-1';
+            const want = compDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
+
+        it('multiple', () => {
+            const dataMap = new Map();
+            dataMap.set('no', 'data-no-M');
+
+            z('*[id]').data(dataMap).update();
+            const got = document.documentElement.outerHTML;
+
+            compDoc.querySelectorAll('[id]').forEach((el) => el.dataset['no'] = 'data-no-M');
+            const want = compDoc.documentElement.outerHTML;
+
+            assertEquals(got, want);
+        });
+    });
+});
+
 describe('Elements manipulation', () => {
     beforeEach(() => {
         globalThis.document = doc.cloneNode(true);
