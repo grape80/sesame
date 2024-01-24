@@ -54,6 +54,8 @@ sesame.prototype.functions = undefined;
 
 /**
  * Update the DOM.
+ *
+ * @returns {sesame} - The sesame instance.
  */
 sesame.prototype.update = function () {
     this.elements.forEach((el) => {
@@ -61,6 +63,8 @@ sesame.prototype.update = function () {
             func(el);
         });
     });
+
+    return this;
 };
 
 export { sesame };
