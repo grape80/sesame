@@ -6,22 +6,9 @@ import { DOMParser } from 'dom';
 import { sesame as z } from '../core/core.js';
 
 // The document to use for testing.
+const resp = await fetch(new URL('./testdata/doc.html', import.meta.url));
 const doc = new DOMParser().parseFromString(
-    `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Test</title>
-</head>
-<body>
-    <div id="id-1" class="class-1"></div>
-    <div id="id-2" class="class-1"></div>
-    <div id="id-3" class="class-2"></div>
-</body>
-</html>
-`,
+    await resp.text(),
     'text/html',
 );
 
@@ -51,7 +38,7 @@ describe('Constructor', () => {
     });
 
     describe('Select elements', () => {
-        describe('By id', () => {
+        describe('by ID', () => {
             it('exist', () => {
                 const got = z('#id-1');
                 const want = document.getElementById('id-1');
@@ -69,7 +56,7 @@ describe('Constructor', () => {
             });
         });
 
-        describe('By class', () => {
+        describe('by class', () => {
             it('exist', () => {
                 const got = z('.class-1');
                 const want = document.getElementsByClassName('class-1');
@@ -89,7 +76,7 @@ describe('Constructor', () => {
             });
         });
 
-        describe('By css selector', () => {
+        describe('by CSS selector', () => {
             it('exist', () => {
                 const got = z('*[id]');
                 const want = document.querySelectorAll('[id]');

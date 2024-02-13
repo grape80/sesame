@@ -41,7 +41,7 @@ const sesame = function (parameter, context) {
 /**
  * The array of selected elements.
  *
- * @type {Array<any>}
+ * @type {Array<Element>}
  */
 sesame.prototype.elements = undefined;
 
